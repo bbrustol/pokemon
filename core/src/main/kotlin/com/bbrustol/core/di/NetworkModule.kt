@@ -1,6 +1,7 @@
 package com.bbrustol.core.di
 
 import com.bbrustol.core.BuildConfig
+import com.bbrustol.core.data.repository.PokemonRepositoryImpl
 import com.bbrustol.core.data.service.PokemonService
 import com.bbrustol.core.inftastructure.DefaultNetworkChecker
 import com.bbrustol.core.inftastructure.NetworkChecker
@@ -11,13 +12,20 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.StringQualifier
 import org.koin.dsl.module
 
 val networkModule = module {
     single { androidContext() }
-    single<NetworkChecker> { DefaultNetworkChecker(get()) }
+    single<NetworkChecker> { DefaultNetworkChecker(context = get()) }
     single { provideHttpClient() }
-    single { PokemonService(get(), get()) }
+    single {
+        PokemonRepositoryImpl(
+            pokemonService = get(),
+            ioDispatcher = get(StringQualifier("IoDispatcher"))
+        )
+    }
+    single { PokemonService(httpClient = get(), networkChecker = get()) }
 }
 
 private fun provideHttpClient(): HttpClient =

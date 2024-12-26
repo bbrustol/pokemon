@@ -9,7 +9,7 @@ data class PokemonListResponse(
     @SerialName("count") val count: Int,
     @SerialName("next") val next: String,
     @SerialName("previous") val previous: String,
-    @SerialName("results") val results: List<com.bbrustol.core.data.response.ResultResponse>
+    @SerialName("results") val results: List<ResultResponse>
 )
 
 @Serializable
