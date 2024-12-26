@@ -1,7 +1,7 @@
 package com.bbrustol.pokemonmvi.presentation
 
 internal sealed interface HomeUiState {
-    data class HomeState(val user: GoogleUserModel) : HomeUiState
+//    data class HomeState(val user: GoogleUserModel) : HomeUiState
     data object Loading : HomeUiState
 }
 
